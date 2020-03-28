@@ -12,16 +12,19 @@ export default function Profile() {
     const ongId = localStorage.getItem('ongId');
     const ongName = localStorage.getItem('ongName');
 
-    useEffect(() => {
+    useEffect( () => {
         api.get('profile', {
             headers: {
                 Authorization: ongId,
             }
         }).then(response => {
             setIncidents(response.data);
+            console.log(response.data);
+
         })
 
     }, [ongId]);
+
 
 
 
