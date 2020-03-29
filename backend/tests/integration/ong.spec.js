@@ -1,7 +1,31 @@
 const request = require('supertest');
+const app = require('../../src/app');
+const connection = require('../../src/database/connection');
 
 describe('ONG', () => {
-    it('Should be able to create a new ONG', () => {
-        //41:58
+
+    beforeEach( async () => {
+        await connection.migrate.rollback();
+        await connection.migrate.latest();
+    });
+
+    afterAll( async () => {
+        await connection.destroy();
+    });
+
+    it('Should be able to create a new ONG', async () => {
+        const response = await request(app)
+        .post('/ongs')
+        .send({
+            name: "APAD3",
+            email: "contato@email.com",
+            whatsapp: "85988882211",
+            city: "Belo Horizonte",
+            uf: "BH"
+        });
+
+        expect(response.body).toHaveProperty('id');
+        expect(response.body.id).toHaveLength(8);
+
     });
 })
